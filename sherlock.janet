@@ -1,7 +1,5 @@
 (defn run
-  """
-  Runs a command and returns the stdout
-  """
+  "Runs a command and returns the stdout"
   [& commands]
   (def p (os/spawn commands :p {:in :pipe :out :pipe}))
   (let [output (:read (p :out) :all)]
@@ -27,8 +25,31 @@
     (os/cd "..")
     results))
 
+(defn metadata-for-repo [repo]
+  (let [first-form (parse (slurp (string "repos/" repo "/project.janet")))]
+    (when (= (first-form 0) 'declare-project)
+      (struct ;(tuple/slice first-form 1)))))
+
+(defn all-metadata []
+  (reduce
+    (fn [acc repo]
+      (let [metadata (metadata-for-repo repo)]
+        (put acc repo metadata)))
+    @{}
+    (list-janet-projects has-project.janet?)))
+
+(defn save-to-file [data filename]
+  (def f (file/open filename :w))
+  (file/write f data)
+  (file/flush f)
+  (file/close f))
+
 (comment 
   (os/cd "..")
   (os/cwd)
+  (metadata-for-repo "mago")
+  (all-metadata)
+  (save-to-file (string/format "%q" (all-metadata)) "metadata.txt")
+  (list-janet-projects has-project.janet?)
   (list-janet-projects lacks-any-janet-files?)
   (list-janet-projects lacks-project.janet?))
