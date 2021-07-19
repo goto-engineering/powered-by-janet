@@ -44,11 +44,15 @@
   (file/flush f)
   (file/close f))
 
+(defn names-and-descriptions []
+  (map (fn [{:name name :description description}] (string name " - " description)) (values (all-metadata))))
+
 (comment 
   (os/cd "..")
   (os/cwd)
   (metadata-for-repo "mago")
   (all-metadata)
+  (names-and-descriptions)
   (save-to-file (string/format "%q" (all-metadata)) "metadata.txt")
   (list-janet-projects has-project.janet?)
   (list-janet-projects lacks-any-janet-files?)
