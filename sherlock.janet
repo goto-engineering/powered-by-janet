@@ -53,7 +53,7 @@
   (metadata-for-repo "mago")
   (all-metadata)
   (names-and-descriptions)
-  (save-to-file (string/format "%q" (all-metadata)) "metadata.txt")
+  (save-to-file (string/format "%j" (all-metadata)) "metadata.txt")
   (list-janet-projects has-project.janet?)
   (list-janet-projects lacks-any-janet-files?)
   (list-janet-projects lacks-project.janet?))
