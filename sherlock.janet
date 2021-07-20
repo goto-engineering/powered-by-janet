@@ -25,12 +25,31 @@
     (os/cd "..")
     results))
 
+(defn sanitize-metadata
+  """
+  Some projects don't have the declare-project form first,
+  which breaks `parse`, others have invalid stuff e.g. in
+  their dependencies.
+
+  This should prevent crashing when the project.janet has
+  an unexpected shape.
+  """
+  [form repo]
+
+  (if (= (first form) 'declare-project)
+    (let [metadata (tuple/slice form 1)]
+      (if (even? (length metadata))
+        (struct ;metadata)
+        (print "Metadata malformed for repo '" repo "'")))
+    (print "Cannot parse 'project.janet' in repo '" repo "'")))
+
 # try using jpm/pm/require-jpm instead of `parse` once bakpakin pushes the necessariy Janet version
 (defn metadata-for-repo [repo]
-  (let [first-form (parse (slurp (string "repos/" repo "/project.janet")))]
-    (if (= (first-form 0) 'declare-project)
-      (struct ;(tuple/slice first-form 1))
-      (print "Cannot parse 'project.janet' in repo '" repo "'"))))
+  (-> 
+    (string "repos/" repo "/project.janet")
+    slurp
+    parse
+    (sanitize-metadata repo)))
 
 (defn all-metadata []
   (reduce
@@ -52,7 +71,8 @@
 (comment 
   (os/cd "..")
   (os/cwd)
-  (metadata-for-repo "mago")
+  (metadata-for-repo "mago") # works
+  (metadata-for-repo "janet-brew-ls") # metadata broken
   (all-metadata)
   (names-and-descriptions)
   (save-to-file (string/format "%j" (all-metadata)) "metadata.txt")

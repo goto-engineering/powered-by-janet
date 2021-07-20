@@ -26,8 +26,8 @@
 (comment
   (ensure-dir)
   (clone-repo "https://github.com/sepisoad/jurl.git")
+  (download-all)
   (os/cwd)
   (os/dir ".")
   (os/stat "repos")
-  (download-all)
   (os/cd ".."))
