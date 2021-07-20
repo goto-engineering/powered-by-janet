@@ -101,6 +101,7 @@
    "https://github.com/bakpakin/littleserver"
    "https://github.com/bakpakin/mendoza"
    "https://github.com/bakpakin/x43bot"
+   "https://github.com/swlkr/janet-html"
    "https://github.com/brandonchartier/janet-html"
    "https://github.com/brandonchartier/janet-irc-client"
    "https://github.com/brandonchartier/janet-queue"
