@@ -25,10 +25,12 @@
     (os/cd "..")
     results))
 
+# try using jpm/pm/require-jpm instead of `parse` once bakpakin pushes the necessariy Janet version
 (defn metadata-for-repo [repo]
   (let [first-form (parse (slurp (string "repos/" repo "/project.janet")))]
-    (when (= (first-form 0) 'declare-project)
-      (struct ;(tuple/slice first-form 1)))))
+    (if (= (first-form 0) 'declare-project)
+      (struct ;(tuple/slice first-form 1))
+      (print "Cannot parse 'project.janet' in repo '" repo "'"))))
 
 (defn all-metadata []
   (reduce

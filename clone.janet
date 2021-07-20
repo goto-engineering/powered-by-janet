@@ -7,6 +7,7 @@
     (when (not (= :directory (get repos-stat :mode)))
       (os/mkdir "repos"))))
 
+# Should do `git pull` if repo already exists, not no-op
 (defn clone-repo [url]
   (let [status (os/execute @("git" "clone" "--depth" "1" url) :p)]
     (case status
