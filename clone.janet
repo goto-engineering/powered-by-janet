@@ -1,19 +1,19 @@
-(import sh)
 
 (use ./packages)
 
 (defn ensure-dir []
-  (let [repos-stat (os/stat "repos")]
-    (when (not (= :directory (get repos-stat :mode)))
-      (os/mkdir "repos"))))
+  (match (os/stat "repos")
+    nil (os/mkdir "repos")
+    {:mode :directory} nil
+    _ (error `"repos" exists and is not a directory!`)))
 
 # Should do `git pull` if repo already exists, not no-op
 (defn clone-repo [url]
-  (let [status (os/execute @("git" "clone" "--depth" "1" url) :p)]
+  (let [status (:wait (os/spawn @("git" "clone" "--depth" "1" url) :p))]
     (case status
-      0 (print "Success!")
-      128 (print "Repo already cloned.")
-      (print "Failed with status code: " status))))
+      0 (eprint "Success!")
+      128 (eprint "Repo already cloned.")
+      (eprint "Failed with status code: " status))))
 
 (defn download-all []
   (ensure-dir)
@@ -21,6 +21,9 @@
   (os/setenv "GIT_TERMINAL_PROMPT" "0")
   (each url packages
     (clone-repo url)))
+
+(defn main [&] 
+  (download-all))
 
 
 (comment
