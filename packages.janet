@@ -258,6 +258,7 @@
    "https://github.com/yumaikas/anno"
    "https://github.com/yumaikas/anno-server"
    "https://github.com/yumaikas/cartnet"
+   "https://github.com/yumaikas/praxis"
    "https://github.com/yumaikas/eye"
    "https://github.com/yumaikas/janet-errs"
    "https://github.com/yumaikas/janet-globals"
