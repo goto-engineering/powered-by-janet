@@ -18,7 +18,9 @@
 (defn- header [package-count]
   [:div.header 
    [:div.title  "Powered by Janet"]
-   [:div.subtitle  "A collection of all (" package-count ") things written in "
+   [:div.subtitle  ["A collection of all (" 
+                    [:span {:id "package-count"} package-count]
+                    ") things written in "]
     [:a {:href "https://janet-lang.org"} "Janet"]]])
 
 (defn- search []
@@ -48,7 +50,7 @@
       (submit-package)
       (search)
       [:ul.package-list
-       (map list-item metadata)])))
+       (map |[(list-item $) "\n"] metadata)])))
 
 (defn generate-all! []
   (let [metadata (sherlock/all-metadata)
