@@ -5,3 +5,8 @@
   :url "https://github.com/goto-engineering/powered-by-janet"
   :repo "https://github.com/goto-engineering/powered-by-janet.git"
   :dependencies ["https://github.com/janet-lang/spork.git"])
+
+ (import ./clone)
+(phony "clone" []
+       (clone/download-all))
+
