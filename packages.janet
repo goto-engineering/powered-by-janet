@@ -44,7 +44,6 @@
    "https://github.com/Saikyun/janet-namespaces"
    "https://github.com/Saikyun/janet-profiling"
    "https://github.com/Saikyun/janet-whereami"
-   "https://github.com/Saikyun/text-experiment"
    "https://github.com/Saikyun/freja"
    "https://github.com/ahungry/ahungry-janet"
    "https://github.com/ahungry/ahungry-janet-to-js"
