@@ -1,3 +1,5 @@
+(import ./util)
+
 (defn run
   "Runs a command and returns the stdout"
   [& commands]
@@ -59,14 +61,8 @@
     @{}
     (list-janet-projects has-project.janet?)))
 
-(defn save-to-file [data filename]
-  (def f (file/open filename :w))
-  (file/write f data)
-  (file/flush f)
-  (file/close f))
-
 (defn names-and-descriptions []
-  (map (fn [{:name name :description description}] (string name " - " description)) (values (all-metadata))))
+  (map (fn [metadata] {:name (metadata :name) :description (metadata :description)}) (values (all-metadata))))
 
 (comment 
   (os/cd "..")
@@ -75,7 +71,7 @@
   (metadata-for-repo "janet-brew-ls") # metadata broken
   (all-metadata)
   (names-and-descriptions)
-  (save-to-file (string/format "%j" (all-metadata)) "metadata.txt")
+  (util/save-to-file (string/format "%j" (all-metadata)) "metadata.txt")
   (list-janet-projects has-project.janet?)
   (list-janet-projects lacks-any-janet-files?)
   (list-janet-projects lacks-project.janet?))

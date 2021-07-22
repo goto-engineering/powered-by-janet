@@ -1,4 +1,3 @@
-
 (use ./packages)
 
 (defn ensure-dir []
@@ -7,7 +6,8 @@
     {:mode :directory} nil
     _ (error `"repos" exists and is not a directory!`)))
 
-# Should do `git pull` if repo already exists, not no-op
+# TODO: Do `git pull` if repo already exists, not no-op
+# TODO: Clone into fully qualified folders, there might be name collisions 
 (defn clone-repo [url]
   (let [status (:wait (os/spawn @("git" "clone" "--depth" "1" url) :p))]
     (case status
