@@ -25,7 +25,7 @@
 
 (defn- search []
   [:div.search
-   [:input {:id "search-box" :type "text" :autofocus "autofocus" :placeholder "Search.."}]])
+   [:input {:id "search-box" :name "search-box" :type "text" :autofocus "autofocus" :placeholder "Search.."}]])
 
 (defn- list-item [metadata]
   [:li
