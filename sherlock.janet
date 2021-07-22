@@ -36,21 +36,32 @@
   This should prevent crashing when the project.janet has
   an unexpected shape.
   """
-  [form repo]
+  [captures repo]
 
-  (if (= (first form) 'declare-project)
-    (let [metadata (tuple/slice form 1)]
-      (if (even? (length metadata))
-        (struct ;metadata)
-        (print "Metadata malformed for repo '" repo "'")))
-    (print "Cannot parse 'project.janet' in repo '" repo "'")))
+  (def project-meta (get-in captures ['declare-project 0]))
+  (if (even? (length project-meta))
+    (struct ;project-meta)
+    (do 
+      (pp project-meta)
+      (print "Invalid declare-project for '" repo "'"))))
+
+(defn capture-declares [path] 
+    (def *capture* @{})
+    (defn append-capture [name & arg]
+      (update *capture* name (fn [val] (array/push (or val @[]) ;arg))))
+    (defn only-captures [form] 
+      (when (string/has-prefix? "declare-" (string (form 0)))
+        (append-capture (form 0) (slice form 1))
+        form)
+      nil)
+    (dofile path :expander only-captures)
+    *capture*)
 
 # try using jpm/pm/require-jpm instead of `parse` once bakpakin pushes the necessariy Janet version
 (defn metadata-for-repo [repo]
   (-> 
     (string "repos/" repo "/project.janet")
-    slurp
-    parse
+    capture-declares
     (sanitize-metadata repo)))
 
 (defn all-metadata []

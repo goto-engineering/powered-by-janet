@@ -5,7 +5,6 @@
 (defn load-jpm-env [] 
   (dofile "jpm-env.janet" :env (make-env)))
 
-
 (def f (fiber/new load-jpm-env))
 (def jpm-env (resume f))
 
@@ -20,15 +19,32 @@
         nil))
 
 
+(defn capture-declares [path] 
+    (def *capture* @{})
+    (defn append-capture [name & arg]
+      (update *capture* name (fn [val] (array/push (or val @[]) ;arg))))
+
+    (defn only-captures [form] 
+      (when (string/has-prefix? "declare-" (string (form 0)))
+        (append-capture (form 0) (slice form 1))
+        form)
+      nil)
+    (dofile path :expander only-captures)
+    *capture*)
+
 (each r (os/dir "repos")
   (when (has-project.janet? r)
-    (def proj-env (dofile (project-path r) :env (load-jpm-env)))
-    (def proj-decls (get-in proj-env ['*capture* :value]))
-    # Data is a bit awkward atm.
-    (when (> (length (proj-decls 'declare-project)) 1)
-      (pp (proj-decls 'declare-project))
-      (eprint "More than one declare-project call in " r "!"))
-    (def proj-call (get-in proj-env ['*capture* :value 'declare-project 0 0]))
-    (pp [r (get-kv proj-call :name)])
+    (def *capture* @{})
+    (defn append-capture [name & arg]
+      (update *capture* name (fn [val] (array/push (or val @[]) ;arg))))
+
+    (defn only-captures [form] 
+      (when (string/has-prefix? "declare-" (string (form 0)))
+        (append-capture (form 0) (slice form 1))
+        form)
+      nil)
+    (dofile (project-path r) :expander only-captures)
+    
+    (pp (struct ;(tracev (get-in *capture* ['declare-project 0]))))
     ))
 
