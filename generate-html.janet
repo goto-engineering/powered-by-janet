@@ -53,7 +53,7 @@
 (defn generate-all! []
   (let [metadata (sherlock/all-metadata)
         index (generate-index metadata)]
-    (util/save-to-file index "public/index.html")))
+    (util/save-to-file index "docs/index.html")))
 
 (comment
   (generate-all!))
