@@ -55,5 +55,7 @@
         index (generate-index metadata)]
     (util/save-to-file index "docs/index.html")))
 
+(defn main [&]
+  (generate-all!))
 (comment
   (generate-all!))
