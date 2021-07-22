@@ -5,7 +5,7 @@ A collection of all things written in Janet
 
 0. [Install Janet](https://janet-lang.org/docs/index.html)
 1. Clone this repo.
-2. Run `jpm run clone`
-3. You can probe the cloned repos with the functions in `sherlock.janet`. Examples are in the `(comment ..)` block.
+2. Run `janet clone.janet` to clone all repos from the list into `repos`
+3. Run `janet generate-html.janet` to generate a the HTML into the `docs` folder
 
 Note: This uses `fd` to scan for files. If you want to use those functions, you have to install it.
