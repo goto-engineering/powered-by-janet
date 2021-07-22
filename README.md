@@ -1,3 +1,5 @@
+[Try Powered By Janet](https://goto-engineering.github.io/powered-by-janet/)
+
 # powered-by-janet
 A collection of all things written in Janet
 
