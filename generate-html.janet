@@ -18,7 +18,7 @@
 
 (defn- header []
   [:div.header 
-   [:div.title  "Powered by Janet"]
+   [:a {:href "https://goto-engineering.github.io/powered-by-janet/"} [:div.title  "Powered by Janet"]]
    [:div.subtitle  ["A collection of all things written in "]
     [:a {:href "https://janet-lang.org"} "Janet"]]])
 
@@ -68,8 +68,7 @@
          [:p.description (or (metadata :description) "No description")]
          [:p.author "Author: " (metadata :author)]
          [:p.license "License: " (metadata :license)]
-         [:p.url "URL: " [:a {:href (metadata :url)} (metadata :url)]]
-         [:p.repo "Repo: " (metadata :repo)]]))
+         [:p.url "URL: " [:a {:href (metadata :url)} (metadata :url)]]]))
 
 # TODO: use `pairs`
 (defn generate-details [metadata]
