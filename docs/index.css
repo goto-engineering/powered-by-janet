@@ -1,32 +1,3 @@
-body {
-	background: linear-gradient(to left, #09a5b8, #076591);
-	font-family: sans-serif;
-	overflow-y: scroll;
-}
-
-.content {
-	width: 700px;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.header {
-	color: white;
-	margin: 30px 0;
-}
-
-.header .title {
-	font-size: 3rem;
-}
-
-.header a {
-	color: white;
-}
-
-.header .subtitle {
-	font-size: 1rem;
-}
-
 .search #search-box {
 	box-sizing: border-box;
 	width: 100%;
@@ -50,7 +21,7 @@ body {
 }
 
 .package {
-	min-height: 150px;
+	min-height: 110px;
 	background-color: white;
 	border-bottom: 1px solid grey;
 	border-right: 1px solid grey;
@@ -60,12 +31,47 @@ body {
 
 .package .title {
 	font-size: 16px;
-	font-weight: bold;
 	margin: 5px 0px;
 }
 
+.package .title a {
+	font-weight: bold;
+	color: #076691;
+}
+
+.package .title .author {
+	color: silver;
+}
+
 .package {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.package .left {
 	font-size: 12px;
+}
+
+.package .right {
+	width: 150px;
+	text-align: right;
+}
+
+.package .right .detail {
+	margin-bottom: 10px;
+}
+
+.package .right .top {
+	font-size: 12px;
+	color: silver;
+}
+
+.package .right .bottom {
+	font-size: 14px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
 }
 
 .package .description {

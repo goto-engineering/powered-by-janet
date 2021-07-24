@@ -1,0 +1,11 @@
+.package {
+	background-color: white;
+	border-bottom: 1px solid grey;
+	border-right: 1px solid grey;
+	padding: 10px;
+}
+
+.package .description {
+	border-bottom: 1px solid silver;
+	padding-bottom: 20px;
+}

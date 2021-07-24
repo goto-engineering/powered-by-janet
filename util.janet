@@ -9,3 +9,6 @@
     nil (os/mkdir dir)
     {:mode :directory} nil
     _ (error (string `"` dir `" exists and is not a directory!`))))
+
+(defn strip-repo-url [url]
+  (string/replace-all "/" "-" ((string/split  "://" url) 1)))

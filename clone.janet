@@ -1,5 +1,5 @@
-(use ./packages)
-(use ./util)
+(import ./packages)
+(import ./util)
 
 (defn update-repo [repo-name]
   (os/cd repo-name)
@@ -9,13 +9,8 @@
       0 :noop
       (eprint "Failed 'git pull' with status code: " status " for repo: " repo-name))))
 
-(defn strip-repo-url [url]
-  (string/replace-all "/" "-" ((string/split  "://" url) 1)))
-
-(strip-repo-url "https://github.com/goto-engineering/powered-by-janet")
-
 (defn clone-repo [url]
-  (let [repo-name (strip-repo-url url)
+  (let [repo-name (util/strip-repo-url url)
         status (:wait (os/spawn @("git" "clone" "--depth" "1" url repo-name) :p))]
     (case status
       0 :noop
@@ -23,10 +18,10 @@
       (eprint "Failed 'git clone' with status code: " status " for repo: " url))))
 
 (defn download-all []
-  (ensure-dir "repos")
+  (util/ensure-dir "repos")
   (os/cd "repos")
   (os/setenv "GIT_TERMINAL_PROMPT" "0")
-  (each url packages
+  (each url packages/packages
     (clone-repo url)))
 
 (defn main [&] 
@@ -34,7 +29,7 @@
 
 
 (comment
-  (ensure-dir "repos")
+  (util/ensure-dir "repos")
   (clone-repo "https://github.com/sepisoad/jurl.git")
   (download-all)
   (os/cwd)

@@ -1,0 +1,28 @@
+body {
+	background: linear-gradient(to left, #09a5b8, #076591);
+	font-family: sans-serif;
+	overflow-y: scroll;
+}
+
+.content {
+	width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.header {
+	color: white;
+	margin: 30px 0;
+}
+
+.header .title {
+	font-size: 3rem;
+}
+
+.header a {
+	color: white;
+}
+
+.header .subtitle {
+	font-size: 1rem;
+}
