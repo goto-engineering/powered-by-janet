@@ -1,10 +1,5 @@
 (use ./packages)
-
-(defn ensure-dir []
-  (match (os/stat "repos")
-    nil (os/mkdir "repos")
-    {:mode :directory} nil
-    _ (error `"repos" exists and is not a directory!`)))
+(use ./util)
 
 (defn update-repo [repo-name]
   (os/cd repo-name)
@@ -28,7 +23,7 @@
       (eprint "Failed 'git clone' with status code: " status " for repo: " url))))
 
 (defn download-all []
-  (ensure-dir)
+  (ensure-dir "repos")
   (os/cd "repos")
   (os/setenv "GIT_TERMINAL_PROMPT" "0")
   (each url packages
@@ -39,7 +34,7 @@
 
 
 (comment
-  (ensure-dir)
+  (ensure-dir "repos")
   (clone-repo "https://github.com/sepisoad/jurl.git")
   (download-all)
   (os/cwd)
