@@ -26,7 +26,7 @@
 (defn- search [num-pkgs]
   [:div.search
    [:input {:id "search-box" :name "search-box" :type "text" :autofocus "autofocus" :placeholder "Search.."}]
-   [:div.background-content. "Currently showing " [:span {:id "package-count"} num-pkgs] " repositores"]
+   [:div.background-content. "Currently showing " [:span {:id "package-count"} num-pkgs] " repositories"]
    ])
 
 # TODO: don't show empty values,
