@@ -86,3 +86,13 @@
 .package.hidden {
 	display: none;
 }
+
+#search-box {
+    margin-bottom: 5px;
+}
+.body-content {
+    background: white;
+}
+.background-content {
+    color: white;
+}

@@ -17,14 +17,17 @@
         content]]]]))
 
 (defn- header []
+   (def home "https://goto-engineering.github.io/powered-by-janet/")
   [:div.header 
-   [:a {:href "https://goto-engineering.github.io/powered-by-janet/"} [:div.title  "Powered by Janet"]]
+   [:a {:href home} [:div.title  "Powered by Janet"]]
    [:div.subtitle  ["A collection of all things written in "]
     [:a {:href "https://janet-lang.org"} "Janet"]]])
 
-(defn- search []
+(defn- search [num-pkgs]
   [:div.search
-   [:input {:id "search-box" :name "search-box" :type "text" :autofocus "autofocus" :placeholder "Search.."}]])
+   [:input {:id "search-box" :name "search-box" :type "text" :autofocus "autofocus" :placeholder "Search.."}]
+   [:div.background-content. "Currently showing " [:span {:id "package-count"} num-pkgs] " repositores"]
+   ])
 
 # TODO: don't show empty values,
 # TODO: last changed date - in sherlock?
@@ -36,12 +39,12 @@
       [:a {:href (string "package/" repo-name ".html")} (metadata :name)]
       [:p.description (or (metadata :description) "No description")]]]
     [:div.right
-     [:div.detail
+     (when (metadata :author) [:div.detail
       [:div.top "Author"]
-      [:div.bottom {:title (metadata :author)} (metadata :author)]]
-     [:div.detail
+      [:div.bottom {:title (metadata :author)} (metadata :author)]])
+     (when (metadata :license) [:div.detail
       [:div.top "License"]
-      [:div.bottom (metadata :license)]]]]])
+      [:div.bottom (metadata :license)]])]]])
 
 (defn- submit-package []
   [:div.submit-package
@@ -55,7 +58,7 @@
          [:script {:type "text/javascript" :src "script.js"}]]
         (header)
         (submit-package)
-        (search)
+        (search (length metadata))
         [:ul.package-list
          (map |[(index-item $ (metadata $)) "\n"] (keys metadata))]))
 
@@ -81,7 +84,8 @@
     (util/ensure-dir "docs/package") 
     (util/save-to-file index "docs/index.html")
     (each [filename content] details
-      (util/save-to-file content (string "docs/package/" (string filename ".html"))))))
+      (ev/spawn
+        (util/save-to-file content (string "docs/package/" (string filename ".html")))))))
 
 (defn main [&]
   (generate-all!))

@@ -29,12 +29,7 @@
 
 (defn sanitize-metadata
   """
-  Some projects don't have the declare-project form first,
-  which breaks `parse`, others have invalid stuff e.g. in
-  their dependencies.
-
-  This should prevent crashing when the project.janet has
-  an unexpected shape.
+  Some projects have invalid project metadata
   """
   [captures repo]
 

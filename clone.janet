@@ -17,12 +17,26 @@
       128 (update-repo repo-name)
       (eprint "Failed 'git clone' with status code: " status " for repo: " url))))
 
+
+(defn ev/par-each [items f &keys {:dop dop}]
+  (def sup-chan (ev/chan))
+  (each i (range dop)
+    (ev/go (fiber/new |(f (items i)) :tep) nil sup-chan))
+  (each item (slice items dop)
+    (pp item)
+    (def [status fib] (ev/take sup-chan))
+    (unless (= status :ok)
+      (propagate (fiber/last-value fib) fib))
+    (ev/go (fiber/new |(f item) :tep) nil sup-chan)))
+
 (defn download-all []
   (util/ensure-dir "repos")
   (os/cd "repos")
   (os/setenv "GIT_TERMINAL_PROMPT" "0")
-  (each url packages/packages
-    (clone-repo url)))
+  (def start (os/time))
+  (ev/par-each packages/packages |(clone-repo $) :dop 4)
+  (def end (os/time))
+  (print "It took" (- end start) " seconds to clone"))
 
 (defn main [&] 
   (download-all))
