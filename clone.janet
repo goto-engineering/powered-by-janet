@@ -1,6 +1,6 @@
 (import ./packages)
 (import ./util)
-(import path)
+(import spork/path)
 
 (defn update-repo [repo-root repo-name]
   (os/cd (path/join repo-root repo-name))
