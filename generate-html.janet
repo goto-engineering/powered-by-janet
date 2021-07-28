@@ -71,7 +71,8 @@
          [:p.description (or (metadata :description) "No description")]
          [:p.author "Author: " (metadata :author)]
          [:p.license "License: " (metadata :license)]
-         [:p.url "URL: " [:a {:href (metadata :url)} (metadata :url)]]]))
+         [:p.url "URL: " [:a {:href (metadata :url)} (metadata :url)]]
+         [:p.url "Last commit: " (metadata :last-commit)]]))
 
 # TODO: use `pairs`
 (defn generate-details [metadata]

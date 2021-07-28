@@ -37,7 +37,6 @@
   (if (even? (length project-meta))
     (struct ;project-meta)
     (do 
-      (pp project-meta)
       (print "Invalid declare-project for '" repo "'"))))
 
 (defn capture-declares [path] 
@@ -52,17 +51,24 @@
     (dofile path :expander only-captures)
     *capture*)
 
-# try using jpm/pm/require-jpm instead of `parse` once bakpakin pushes the necessariy Janet version
-(defn metadata-for-repo [repo]
+(defn project-data-for-repo [repo]
   (-> 
     (string "repos/" repo "/project.janet")
     capture-declares
     (sanitize-metadata repo)))
 
+(defn last-commit-date-for-repo [repo-name]
+  (os/cd (string "repos/" repo-name))
+  (let [result (string/trim (run "git" "show" "-s" "--format=%cr"))]
+    (os/cd "../..")
+    result))
+
 (defn all-metadata []
   (reduce
     (fn [acc repo]
-      (let [metadata (metadata-for-repo repo)]
+      (let [project-data (project-data-for-repo repo)]
+        (def metadata (if (not (nil? project-data))
+          (put (table ;(kvs project-data)) :last-commit (last-commit-date-for-repo repo))))
         (put acc repo metadata)))
     @{}
     (list-janet-projects has-project.janet?)))
@@ -73,9 +79,10 @@
 (comment 
   (os/cd "..")
   (os/cwd)
-  (metadata-for-repo "mago") # works
-  (metadata-for-repo "janet-brew-ls") # metadata broken
+  (project-data-for-repo "git.sr.ht-~subsetpark-mago") # works
+  (project-data-for-repo "github.com-heycalmdown-janet-brew-ls") # metadata broken
   (all-metadata)
+  (last-commit-date-for-repo "git.sr.ht-~subsetpark-mago")
   (names-and-descriptions)
   (util/save-to-file (string/format "%j" (all-metadata)) "metadata.txt")
   (list-janet-projects has-project.janet?)
