@@ -30,7 +30,6 @@
    ])
 
 # TODO: don't show empty values,
-# TODO: last changed date - in sherlock?
 (defn- index-item [repo-name metadata]
   [:li
    [:div.package
