@@ -1,4 +1,5 @@
 (import ./util)
+(import ./packages)
 
 (defn run
   "Runs a command and returns the stdout"
@@ -76,6 +77,20 @@
 (defn names-and-descriptions []
   (map (fn [metadata] {:name (metadata :name) :description (metadata :description)}) (values (all-metadata))))
 
+(defn deps-for-repo [repo]
+  ((project-data-for-repo repo) :dependencies))
+
+(defn sanitize-repo-name [repo]
+  (if (struct? repo)
+    (sanitize-repo-name (repo :repo))
+    (string/replace ".git" "" repo)))
+
+(defn all-deps-from-all-repos []
+  (map sanitize-repo-name (filter |(not (nil? $)) (flatten (map |($ :dependencies) (all-metadata))))))
+
+(defn missing-deps []
+  (distinct (filter |(nil? (index-of $ packages/packages)) (all-deps-from-all-repos))))
+
 (comment 
   (os/cd "..")
   (os/cwd)
@@ -83,6 +98,9 @@
   (project-data-for-repo "github.com-heycalmdown-janet-brew-ls") # metadata broken
   (all-metadata)
   (last-commit-date-for-repo "git.sr.ht-~subsetpark-mago")
+  (deps-for-repo "github.com-heycalmdown-janet-whooing-helper")
+  (all-deps-from-all-repos)
+  (missing-deps)
   (names-and-descriptions)
   (util/save-to-file (string/format "%j" (all-metadata)) "metadata.txt")
   (list-janet-projects has-project.janet?)
