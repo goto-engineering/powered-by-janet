@@ -1,8 +1,12 @@
 .package {
 	background-color: white;
-	border-bottom: 1px solid grey;
-	border-right: 1px solid grey;
-	padding: 10px;
+	border-radius: 5px;
+	padding: 18px;
+	box-shadow: 0px 3px 6px #00000047;
+}
+
+.package h1 {
+ margin-top: 0px;
 }
 
 .package .description {
