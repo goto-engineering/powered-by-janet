@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+
 body {
 	background: linear-gradient(to left, #09a5b8, #076591);
-	font-family: sans-serif;
+	font-family: 'Noto Sans JP', sans-serif;
 	overflow-y: scroll;
 }
 
@@ -12,7 +14,7 @@ body {
 
 .header {
 	color: white;
-	margin: 30px 0;
+	margin: 18px 0 18px 0;
 }
 
 .header .title {
